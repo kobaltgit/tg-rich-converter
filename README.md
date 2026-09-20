@@ -39,7 +39,9 @@ However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown 
 - 🛡️ **HTML-Safe:** Automatically escapes raw `<`, `>`, and `&` in regular text (e.g. mathematical conditions like `x < 5` and `y > 10`), completely preventing Telegram API `400 Bad Request: can't parse entities` errors.
 - 📋 **Native Lists:** Converts unordered (`- `, `* `, `+ `) and ordered (`1. `) lists into native `<ul>` and `<ol>` tags, avoiding conflicts between asterisk bullet markers and italics.
 - 🎨 **Rich Typography:** Supports bold (`**`), italic (`*` / `_`), strikethrough (`~~`), underline (`++text++`), highlight (`==text==`), and spoilers (`||spoiler||`) with snake_case protection.
-- 💻 **Syntax-Highlighted Code:** Converts ` ```python ` into `<pre><code class="language-python">` preserving quotes and copy-paste buttons.
+- 💻 **Syntax-Highlighted Code:** Converts markdown code fences into `<pre><code class="language-...">` preserving language classes, indentation, and copy buttons.
+- ✂️ **Smart Message Splitter:** Safely splits long texts up to 32,768 (Telegram Rich limit) or 4,096 (Classic limit) characters. Automatically closes and re-opens nested tags with attributes (`<pre><code class="...">`, `<blockquote>`), and protects LaTeX formulas from fragmentation.
+- 👁️ **Local HTML Preview:** Instantly generates a standalone `preview.html` styled with authentic Telegram Web dark theme and KaTeX client-side math rendering to visually inspect output without launching a bot.
 - ⚡ **Thread-Safe & Zero Dependencies:** Pure standard Python (`re`, `html`). Fully reentrant and async-safe for high-concurrency bot environments.
 
 ---
@@ -81,6 +83,47 @@ rich_html = to_rich(llm_output)
 # Or specify a custom summary:
 rich_html_en = to_rich(llm_output, thinking_summary="Reasoning Process")
 ```
+
+---
+
+## Smart Message Splitting (Long Outputs)
+
+When LLM output exceeds Telegram limits (32,768 chars for Rich Messages or 4,096 chars for standard messages), naive slicing breaks open HTML tags and crashes the bot. Use `split_rich_message`:
+
+```python
+from tg_rich_converter import split_rich_message
+
+# Automatically converts Markdown to Rich HTML and splits into safe chunks
+chunks = split_rich_message(
+    long_llm_response,
+    max_length=32768,      # 32,768 for Rich Messages (default) or 4,096 for Classic
+    is_markdown=True,      # Automatically runs to_rich()
+    thinking_summary="Reasoning"
+)
+
+# Each chunk is guaranteed to be valid HTML with all open tags closed and reopened
+for chunk in chunks:
+    await bot.send_rich_message(chat_id=chat_id, rich_message={"html": chunk})
+```
+
+---
+
+## Local HTML Preview
+
+Visualize how your message will look in Telegram Desktop/Mobile without running a bot or sending messages:
+
+```python
+from tg_rich_converter import save_preview
+
+# Generates preview.html with Telegram dark theme, KaTeX formulas, and interactive spoilers
+save_preview(
+    llm_output,
+    file_path="preview.html",
+    title="LLM Telegram Preview"
+)
+```
+
+Double click `preview.html` to open it in your browser!
 
 ---
 
