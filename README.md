@@ -9,7 +9,7 @@ A lightweight, zero-dependency Python library that converts standard LLM Markdow
 ---
 
 <p align="center">
-  <img src="assets/demo_01.png" width="48%" alt="Tables and Math Demo" /><
+  <img src="https://raw.githubusercontent.com/kobaltgit/tg-rich-converter/main/assets/demo_01.png" width="48%" alt="Tables and Math Demo" />
 </p>
 
 ---
