@@ -13,8 +13,8 @@
 [![Bot API](https://img.shields.io/badge/Bot%20API-10.1-green)](https://core.telegram.org/bots/api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![Stars](https://img.shields.io/github/stars/kobaltgit/tg-rich-converter?style=for-the-badge&logo=github)](https://github.com/rassvetteam/Rich-Post-Bot/stargazers)
-[![Forks](https://img.shields.io/github/forks/kobaltgit/tg-rich-converter?style=for-the-badge&logo=github)](https://github.com/rassvetteam/Rich-Post-Bot/network/members)
+[![Stars](https://img.shields.io/github/stars/kobaltgit/tg-rich-converter?style=for-the-badge&logo=github)](https://github.com/kobaltgit/tg-rich-converter/stargazers)
+[![Forks](https://img.shields.io/github/forks/kobaltgit/tg-rich-converter?style=for-the-badge&logo=github)](https://github.com/kobaltgit/tg-rich-converter/network/members)
 
 A lightweight, zero-dependency Python library that converts standard LLM Markdown, LaTeX formulas, thinking processes, and tables into **native Telegram Bot API 10.1+ Rich HTML** (`sendRichMessage`).
 </div>
