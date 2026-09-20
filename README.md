@@ -42,6 +42,7 @@ However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown 
 
 ## Features
 
+- 🌊 **LLM Streaming Mode (`streaming=True`):** Auto-balances unclosed code blocks (`` ``` ``), reasoning tags (`<think>`), unclosed LaTeX formulas (`$$` / `$`), and unclosed inline styles (`**`, `||`, `++`, `==`, `~~`) during token-by-token streaming, completely preventing Telegram `400 Bad Request: can't parse entities` errors on live message edits.
 - 📊 **Robust Native Tables:** Converts standard Markdown pipe tables into `<table bordered striped>` with column alignment (`left`, `center`, `right`). Safely handles formulas with pipes (`$|\psi\rangle$`, `$|x| \ge 0$`) and escaped pipes (`\|`) inside table cells without breaking columns.
 - 🧮 **LaTeX Math:** Converts `$$...$$` into `<tg-math-block>` and `$x$` into `<tg-math>`.
 - 🧠 **Customizable AI Thinking Blocks:** Converts `<think>...</think>` tags from reasoning models into expandable `<details><summary>Размышления</summary>...</details>` blocks with configurable summary titles.
@@ -61,6 +62,113 @@ However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown 
 ```bash
 pip install tg-rich-converter
 ```
+
+---
+
+## Quick Start (Python)
+
+```python
+from tg_rich_converter import to_rich
+
+llm_output = """
+# Quantum Computing Report
+
+| Algorithm | State | Complexity | Option |
+|:----------|:-----:|:----------:|-------:|
+| Linear Search | $N$ items | $O(N)$ | Mode A \\| B |
+| State Vector  | $|\\psi\\rangle$ | $O(1)$ | Basic |
+
+### Key Formula
+$$|\\psi\\rangle = \\alpha |0\\rangle + \\beta |1\\rangle$$
+
+Stability requires delta < 0.05 and alpha > 0.
+
+<think>
+Evaluating time complexity and qubit entanglement...
+</think>
+"""
+
+# Default thinking summary is "Размышления"
+rich_html = to_rich(llm_output)
+
+# Or specify a custom summary:
+rich_html_en = to_rich(llm_output, thinking_summary="Reasoning Process")
+```
+
+---
+
+## LLM Streaming Mode (Live Edits)
+
+When streaming LLM responses token-by-token (`OpenAI`, `DeepSeek-R1`, `Anthropic Claude`, `Ollama`), intermediate tokens frequently contain unfinished Markdown/LaTeX structures:
+- Unclosed code fences: ````python\ndef run():`` (missing closing ````)
+- Open reasoning blocks: `<think>Analyzing steps...` (missing `</think>`)
+- Half-written formulas: `$E = mc^2` or `$$\int_0^\infty`
+- Incomplete typography: `**bold text`, `||secret key`, `++underlined`
+
+Passing `streaming=True` automatically balances and virtually closes all open structures in LIFO order for every frame:
+
+```python
+import time
+from tg_rich_converter import to_rich
+
+# 1. Send initial placeholder message via sendRichMessage
+sent_msg = await bot.send_rich_message(
+    chat_id=chat_id,
+    rich_message={"html": "<i>⏳ Thinking...</i>"}
+)
+
+buffer = ""
+last_edit_time = time.time()
+THROTTLE_SECONDS = 0.7  # Recommended: 0.6 - 0.8s to avoid Telegram 429 Flood Limits
+
+# 2. Stream tokens from LLM
+async for chunk in openai_client.chat.completions.create(..., stream=True):
+    buffer += chunk.choices[0].delta.content or ""
+    now = time.time()
+    
+    # Edit message with rate-limiting throttle
+    if now - last_edit_time >= THROTTLE_SECONDS:
+        safe_frame_html = to_rich(buffer, streaming=True)
+        await bot.edit_message_text(
+            chat_id=chat_id,
+            message_id=sent_msg.message_id,
+            rich_message={"html": safe_frame_html}  # Must pass rich_message, NOT text/parse_mode!
+        )
+        last_edit_time = now
+
+# 3. Final complete render (streaming=False)
+final_html = to_rich(buffer, streaming=False)
+await bot.edit_message_text(
+    chat_id=chat_id,
+    message_id=sent_msg.message_id,
+    rich_message={"html": final_html}
+)
+```
+
+---
+
+## ⚠️ Troubleshooting & Common Pitfalls
+
+### 1. `Bad Request: can't parse entities: Unsupported start tag "details"`
+* **Cause:** Calling `sendMessage` or `editMessageText` with legacy `text="<details>..."` and `parse_mode="HTML"`. The legacy Telegram parser does not support `<details>`, `<tg-math>`, or `<table>`.
+* **Fix:** Use the Telegram Bot API 10.1+ Rich Message format with `rich_message={"html": ...}`:
+  ```python
+  # ❌ WRONG (Triggers 400 Bad Request):
+  await bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text=rich_html, parse_mode="HTML")
+
+  # ✔ CORRECT (Native Rich Messages):
+  await bot.edit_message_text(chat_id=chat_id, message_id=msg_id, rich_message={"html": rich_html})
+  ```
+
+### 2. `Too Many Requests: retry after X` (Flood Limits)
+* **Cause:** Sending `editMessageText` on every single incoming LLM token.
+* **Fix:** Throttle live edits to once every **0.6 – 0.8 seconds** (or every 40–60 characters).
+
+### 3. Missing `<think>` reasoning block header
+* **Fix:** Customize the default title via `thinking_summary`:
+  ```python
+  html_output = to_rich(markdown_text, thinking_summary="Chain of Thought")
+  ```
 
 ---
 
@@ -104,40 +212,9 @@ tg-rich big_report.md --split --limit 4096 -o chunk.html
 | `-s, --split` | Split long message into safe Telegram chunks | `False` |
 | `-l, --limit INT` | Maximum character length for splitting | `32768` |
 | `-t, --thinking-summary TEXT` | Custom header for `<think>` reasoning blocks | `Размышления` |
+| `--lang {ru,en}` | Interface and error message language | `auto` |
 | `-q, --quiet` | Suppress banner and progress messages in stderr | `False` |
 | `-v, --version` | Display current library version | |
-
----
-
-## Quick Start (Python)
-
-```python
-from tg_rich_converter import to_rich
-
-llm_output = """
-# Quantum Computing Report
-
-| Algorithm | State | Complexity | Option |
-|:----------|:-----:|:----------:|-------:|
-| Linear Search | $N$ items | $O(N)$ | Mode A \\| B |
-| State Vector  | $|\\psi\\rangle$ | $O(1)$ | Basic |
-
-### Key Formula
-$$|\\psi\\rangle = \\alpha |0\\rangle + \\beta |1\\rangle$$
-
-Stability requires delta < 0.05 and alpha > 0.
-
-<think>
-Evaluating time complexity and qubit entanglement...
-</think>
-"""
-
-# Default thinking summary is "Размышления"
-rich_html = to_rich(llm_output)
-
-# Or specify a custom summary:
-rich_html_en = to_rich(llm_output, thinking_summary="Reasoning Process")
-```
 
 ---
 
@@ -235,12 +312,33 @@ requests.post(
 
 ---
 
-## Testing
+## Testing & Demos
 
-Run unit tests locally:
-
+### 1. Run Unit Tests
+Run the comprehensive test suite locally (44 tests, 100% pass):
 ```bash
 pytest
+```
+
+### 2. Live Telegram Streaming Demo
+Test real-time LLM token-by-token streaming with rate-limiting throttle (0.7s) directly in your Telegram chat:
+```bash
+# Direct CLI arguments
+python demo_streaming.py --token "YOUR_BOT_TOKEN" --chat-id "YOUR_CHAT_ID"
+
+# Or via environment variables
+export BOT_TOKEN="YOUR_BOT_TOKEN"
+export CHAT_ID="YOUR_CHAT_ID"
+python demo_streaming.py
+
+# Windows PowerShell
+$env:BOT_TOKEN="YOUR_BOT_TOKEN"; $env:CHAT_ID="YOUR_CHAT_ID"; python demo_streaming.py
+```
+
+### 3. Local Console Stream Simulation
+Validate intermediate streaming frames in terminal without sending requests to Telegram:
+```bash
+python demo_streaming.py
 ```
 
 ---

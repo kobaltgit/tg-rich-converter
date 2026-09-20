@@ -2,6 +2,8 @@ import html
 import re
 from typing import Dict, List
 
+from .streaming import balance_streaming_markdown
+
 
 class _ConversionContext:
     """Изолированный контекст одной операции конвертации для потокобезопасности."""
@@ -55,8 +57,22 @@ class TelegramRichConverter:
 
         return text
 
-    def convert(self, text: str, thinking_summary: str = "Размышления") -> str:
-        """Конвертирует исходный текст в Telegram Rich HTML."""
+    def convert(
+        self,
+        text: str,
+        thinking_summary: str = "Размышления",
+        streaming: bool = False,
+    ) -> str:
+        """Конвертирует исходный текст в Telegram Rich HTML.
+
+        Args:
+            text: Исходный Markdown/LaTeX текст.
+            thinking_summary: Заголовок блока рассуждений <think>.
+            streaming: Включить автобалансировку незавершённых конструкций (потоковый режим).
+        """
+        if streaming:
+            text = balance_streaming_markdown(text)
+
         ctx = _ConversionContext(thinking_summary=thinking_summary)
 
         # Нормализация переносов строк
@@ -82,7 +98,11 @@ class TelegramRichConverter:
         # 2. Обрабатываем reasoning-теги моделей (<think>...</think>)
         def replace_think(match: re.Match) -> str:
             thought = match.group(1).strip()
-            sub_converted = self.convert(thought, thinking_summary=ctx.thinking_summary)
+            sub_converted = self.convert(
+                thought,
+                thinking_summary=ctx.thinking_summary,
+                streaming=False,
+            )
             rendered = f"<details><summary>{html.escape(ctx.thinking_summary)}</summary>{sub_converted}</details>"
             return ctx.save(rendered)
 
@@ -285,9 +305,23 @@ class TelegramRichConverter:
         return "\n".join(html_out)
 
 
-def to_rich(text: str, thinking_summary: str = "Размышления") -> str:
-    """Конвертирует сырой Markdown/LaTeX/таблицы в Telegram Rich HTML."""
-    return TelegramRichConverter().convert(text, thinking_summary=thinking_summary)
+def to_rich(
+    text: str,
+    thinking_summary: str = "Размышления",
+    streaming: bool = False,
+) -> str:
+    """Конвертирует сырой Markdown/LaTeX/таблицы в Telegram Rich HTML.
+
+    Args:
+        text: Исходный Markdown-текст от нейросети.
+        thinking_summary: Заголовок для блоков рассуждений <think>.
+        streaming: Флаг потокового режима (автозакрытие незавершённых конструкций).
+    """
+    return TelegramRichConverter().convert(
+        text,
+        thinking_summary=thinking_summary,
+        streaming=streaming,
+    )
 
 
 markdown_to_rich = to_rich
