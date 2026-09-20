@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <defs>
+    <!-- Фоновые градиенты -->
+    <radialGradient id="bgGlow" cx="70%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#0f172a" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#070b14" stop-opacity="1"/>
+    </radialGradient>
+    <radialGradient id="tgGlow" cx="20%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Градиенты для текста и акцентов -->
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#229ED9"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="cardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.1"/>
+    </linearGradient>
+
+    <!-- Сетка -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- Фон -->
+  <rect width="1280" height="640" fill="#070b14"/>
+  <rect width="1280" height="640" fill="url(#bgGlow)"/>
+  <rect width="1280" height="640" fill="url(#tgGlow)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+
+  <!-- ЛЕВАЯ КОЛОНКА: БРЕНДИНГ И ОПИСАНИЕ -->
+
+  <!-- Иконка Telegram -->
+  <g transform="translate(90, 80)">
+    <circle cx="36" cy="36" r="36" fill="url(#brandGrad)"/>
+    <path d="M 52 23 L 20 35.5 C 17.8 36.4 17.8 37.6 19.6 38.2 L 27.8 40.7 L 46.8 28.7 C 47.7 28.1 48.5 28.5 47.8 29.1 L 32.4 43 L 31.8 51.5 C 32.7 51.5 33.1 51.1 33.6 50.6 L 38 46.3 L 47 53 C 48.7 53.9 49.8 53.5 50.3 51.5 L 56.2 23.8 C 56.8 21.3 55.2 20.1 52 23 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- Бейдж версии API -->
+  <g transform="translate(180, 93)">
+    <rect width="210" height="34" rx="17" fill="#1e293b" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.4"/>
+    <circle cx="18" cy="17" r="4" fill="#38bdf8"/>
+    <text x="32" y="22" fill="#38bdf8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="700" letter-spacing="0.5">TELEGRAM BOT API 10.1+</text>
+  </g>
+
+  <!-- Заголовок репозитория -->
+  <text x="90" y="215" fill="url(#brandGrad)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="54" font-weight="900" letter-spacing="-1">tg-rich-converter</text>
+
+  <!-- Подзаголовок -->
+  <text x="90" y="265" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="600">LLM Markdown to Native Telegram Rich HTML</text>
+
+  <!-- Описание -->
+  <text x="90" y="310" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="400">
+    <tspan x="90" dy="0">Instant conversion for interactive tables, LaTeX math equations,</tspan>
+    <tspan x="90" dy="26">collapsible reasoning thoughts, and syntax-highlighted code.</tspan>
+  </text>
+
+  <!-- Список тегов / фич -->
+  <g transform="translate(90, 380)">
+    <!-- Тег 1 -->
+    <rect x="0" y="0" width="130" height="36" rx="8" fill="#1e293b" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+    <text x="65" y="23" fill="#38bdf8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" text-anchor="middle">📊 Pipe Tables</text>
+
+    <!-- Тег 2 -->
+    <rect x="142" y="0" width="130" height="36" rx="8" fill="#1e293b" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+    <text x="207" y="23" fill="#a855f7" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" text-anchor="middle">🧮 LaTeX Math</text>
+
+    <!-- Тег 3 -->
+    <rect x="284" y="0" width="155" height="36" rx="8" fill="#1e293b" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+    <text x="361.5" y="23" fill="#34d399" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" text-anchor="middle">🧠 &lt;think&gt; Spoilers</text>
+
+    <!-- Тег 4 -->
+    <rect x="451" y="0" width="160" height="36" rx="8" fill="#1e293b" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+    <text x="531" y="23" fill="#fbbf24" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" text-anchor="middle">⚡ Zero Dependency</text>
+  </g>
+
+  <!-- Команда установки pip -->
+  <g transform="translate(90, 455)">
+    <rect width="450" height="54" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+    <text x="24" y="33" fill="#38bdf8" font-family="'JetBrains Mono', Consolas, monospace" font-size="16" font-weight="600">$</text>
+    <text x="44" y="33" fill="#e2e8f0" font-family="'JetBrains Mono', Consolas, monospace" font-size="16" font-weight="500">pip install tg-rich-converter</text>
+    <rect x="375" y="12" width="60" height="30" rx="6" fill="#1e293b"/>
+    <text x="405" y="32" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" text-anchor="middle">COPY</text>
+  </g>
+
+  <!-- ПРАВАЯ КОЛОНКА: ИНТЕРАКТИВНОЕ ОКНО СООБЩЕНИЯ TELEGRAM -->
+  <g transform="translate(710, 80)">
+    <!-- Фоновая карточка сообщения Telegram -->
+    <rect width="480" height="480" rx="20" fill="#17212b" stroke="url(#cardBorder)" stroke-width="1.5"/>
+
+    <!-- Заголовок сообщения -->
+    <text x="28" y="45" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700">🧠 Quantum Report</text>
+
+    <!-- Плашка цитаты -->
+    <g transform="translate(28, 65)">
+      <rect width="424" height="42" rx="6" fill="#1c2d3d"/>
+      <rect width="4" height="42" rx="2" fill="#34d399"/>
+      <text x="16" y="26" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-style="italic">«Rich formatting makes AI responses clear»</text>
+    </g>
+
+    <!-- Интерактивная таблица -->
+    <g transform="translate(28, 125)">
+      <rect width="424" height="135" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+      
+      <!-- Заголовок таблицы -->
+      <rect width="424" height="34" rx="8" fill="#243447"/>
+      <text x="16" y="22" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">ALGORITHM</text>
+      <text x="180" y="22" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">COMPLEXITY</text>
+      <text x="360" y="22" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700">SPEEDUP</text>
+
+      <!-- Строка 1 -->
+      <line x1="0" y1="34" x2="424" y2="34" stroke="#334155" stroke-width="1"/>
+      <text x="16" y="58" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Grover</text>
+      <text x="180" y="58" fill="#38bdf8" font-family="'JetBrains Mono', Consolas, monospace" font-size="13">O(√N)</text>
+      <text x="360" y="58" fill="#34d399" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Quadratic</text>
+
+      <!-- Строка 2 (полосатая) -->
+      <rect y="68" width="424" height="34" fill="#182333"/>
+      <text x="16" y="90" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Shor</text>
+      <text x="180" y="90" fill="#38bdf8" font-family="'JetBrains Mono', Consolas, monospace" font-size="13">O((log N)³)</text>
+      <text x="360" y="90" fill="#a855f7" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Exponential</text>
+
+      <!-- Строка 3 -->
+      <line x1="0" y1="102" x2="424" y2="102" stroke="#334155" stroke-width="1"/>
+      <text x="16" y="124" fill="#f1f5f9" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Classic</text>
+      <text x="180" y="124" fill="#94a3b8" font-family="'JetBrains Mono', Consolas, monospace" font-size="13">O(N)</text>
+      <text x="360" y="124" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13">Baseline</text>
+    </g>
+
+    <!-- Блок формулы LaTeX -->
+    <g transform="translate(28, 280)">
+      <rect width="424" height="75" rx="8" fill="#131c26" stroke="#1e293b" stroke-width="1"/>
+      <text x="212" y="38" fill="#ffffff" font-family="'Cambria Math', 'Times New Roman', serif" font-size="20" font-style="italic" text-anchor="middle">|ψ⟩ = α|0⟩ + β|1⟩</text>
+      <text x="212" y="62" fill="#38bdf8" font-family="'Cambria Math', 'Times New Roman', serif" font-size="15" font-style="italic" text-anchor="middle">∫ e^(−x²) dx = √π</text>
+    </g>
+
+    <!-- Раскрывающийся блок размышлений -->
+    <g transform="translate(28, 375)">
+      <rect width="424" height="38" rx="8" fill="#1b2736"/>
+      <path d="M 18 16 L 24 22 L 30 16" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+      <text x="40" y="24" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600">Размышления (Reasoning Process)</text>
+    </g>
+
+    <!-- Время сообщения и статус -->
+    <text x="425" y="455" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500">12:37 ✓✓</text>
+  </g>
+</svg>

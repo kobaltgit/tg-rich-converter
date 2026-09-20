@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/kobaltgit/tg-rich-converter/main/assets/banner.svg" alt="tg-rich-converter banner" width="100%" />
+</p>
+
 # tg-rich-converter 🚀
 
 [![PyPI version](https://img.shields.io/pypi/v/tg-rich-converter.svg)](https://pypi.org/project/tg-rich-converter/)
