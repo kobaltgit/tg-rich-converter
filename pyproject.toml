@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tg-rich-converter"
+version = "0.1.0"
+description = "Convert LLM Markdown, LaTeX formulas and tables to native Telegram Rich HTML (Bot API 10.1+)"
+readme = "README.md"
+authors = [
+    { name = "kobaltgit" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Communications :: Chat",
+]
+keywords = ["telegram", "rich-messages", "markdown", "latex", "tables", "aiogram", "bot", "llm"]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/kobaltgit/tg-rich-converter"
+Repository = "https://github.com/kobaltgit/tg-rich-converter"
+Issues = "https://github.com/kobaltgit/tg-rich-converter/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tg_rich_converter"]

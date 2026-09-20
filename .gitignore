@@ -1,0 +1,53 @@
+# Виртуальное окружение
+.venv/
+venv/
+ENV/
+env/
+
+# Скрипты для ручных тестов с токенами и переменные окружения
+send_demo.py
+test_live.py
+.env
+.env.*
+
+# Байткод Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Дистрибутивы, пакеты и сборка
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Кэш тестирования и покрытия
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Настройки среды разработки (VS Code / JetBrains)
+.idea/
+*.swp
+*.swo
+
+# Системные файлы операционных систем
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
