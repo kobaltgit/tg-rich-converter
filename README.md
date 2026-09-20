@@ -7,7 +7,6 @@
 
 # tg-rich-converter
 
-
 [![PyPI version](https://img.shields.io/pypi/v/tg-rich-converter.svg)](https://pypi.org/project/tg-rich-converter/)
 [![Python versions](https://img.shields.io/pypi/pyversions/tg-rich-converter.svg)](https://pypi.org/project/tg-rich-converter/)
 [![Platform](https://img.shields.io/badge/Platform-Telegram-26A5E4)](https://telegram.org)
@@ -37,7 +36,7 @@ Starting with **Telegram Bot API 10.1**, Telegram introduced **Rich Messages** (
 - **Expandable spoiler/details blocks** for reasoning models (`DeepSeek-R1`, `OpenAI o1/o3`, `Qwen`, `Gemini`).
 - **Native lists and advanced typography** (`<ul>`, `<ol>`, `<u>`, `<mark>`).
 
-However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown and LaTeX. `tg-rich-converter` bridges this gap seamlessly in **a single function call**.
+However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown and LaTeX. `tg-rich-converter` bridges this gap seamlessly in **a single function call** or via the **CLI command line tool**.
 
 ---
 
@@ -52,7 +51,8 @@ However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown 
 - 💻 **Syntax-Highlighted Code:** Converts markdown code fences into `<pre><code class="language-...">` preserving language classes, indentation, and copy buttons.
 - ✂️ **Smart Message Splitter:** Safely splits long texts up to 32,768 (Telegram Rich limit) or 4,096 (Classic limit) characters. Automatically closes and re-opens nested tags with attributes (`<pre><code class="...">`, `<blockquote>`), and protects LaTeX formulas from fragmentation.
 - 👁️ **Local HTML Preview:** Instantly generates a standalone `preview.html` styled with authentic Telegram Web dark theme and KaTeX client-side math rendering to visually inspect output without launching a bot.
-- ⚡ **Thread-Safe & Zero Dependencies:** Pure standard Python (`re`, `html`). Fully reentrant and async-safe for high-concurrency bot environments.
+- 🚀 **Built-in CLI (`tg-rich`):** Fast command-line utility with TrueColor ANSI logo, preview generator, auto-opening in browser, pipeline support (`stdin`/`stdout`), and batch message splitter.
+- ⚡ **Thread-Safe & Zero Dependencies:** Pure standard Python (`re`, `html`, `argparse`). Fully reentrant and async-safe for high-concurrency bot environments.
 
 ---
 
@@ -64,7 +64,52 @@ pip install tg-rich-converter
 
 ---
 
-## Quick Start
+## Command-Line Interface (CLI)
+
+After installation, the `tg-rich` command is available in your terminal:
+
+### 1. Instant Preview in Browser
+Convert a markdown file and open the interactive Telegram preview directly in your default browser:
+```bash
+tg-rich prompt_response.md --preview --open
+```
+
+### 2. Convert to Rich HTML File
+```bash
+tg-rich document.md -o output.html
+```
+
+### 3. Pipeline / Stdin Mode
+```bash
+cat llm_output.md | tg-rich > telegram_message.html
+```
+
+### 4. Smart Message Splitting
+Split a large document into chunks respecting Telegram character limits:
+```bash
+# Split for Rich Messages (32k limit)
+tg-rich big_report.md --split
+
+# Split for Classic Messages (4k limit) into separate files
+tg-rich big_report.md --split --limit 4096 -o chunk.html
+```
+
+### CLI Options Reference
+| Flag | Description | Default |
+|:---|:---|:---|
+| `input_file` | Path to markdown file (or `-` / pipe for stdin) | `-` |
+| `-o, --output FILE` | Write converted HTML to file instead of stdout | `stdout` |
+| `-p, --preview [FILE]` | Generate standalone preview.html with KaTeX & Telegram Dark theme | `preview.html` |
+| `--open` | Automatically open the preview in default web browser | `False` |
+| `-s, --split` | Split long message into safe Telegram chunks | `False` |
+| `-l, --limit INT` | Maximum character length for splitting | `32768` |
+| `-t, --thinking-summary TEXT` | Custom header for `<think>` reasoning blocks | `Размышления` |
+| `-q, --quiet` | Suppress banner and progress messages in stderr | `False` |
+| `-v, --version` | Display current library version | |
+
+---
+
+## Quick Start (Python)
 
 ```python
 from tg_rich_converter import to_rich

@@ -16,10 +16,15 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Communications :: Chat",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: HTML",
 ]
-keywords = ["telegram", "rich-messages", "markdown", "latex", "tables", "aiogram", "bot", "llm"]
+keywords = ["telegram", "rich-messages", "markdown", "latex", "tables", "aiogram", "bot", "llm", "cli"]
 requires-python = ">=3.8"
 dependencies = []
+
+[project.scripts]
+tg-rich = "tg_rich_converter.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/kobaltgit/tg-rich-converter"
