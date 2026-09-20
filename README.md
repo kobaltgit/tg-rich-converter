@@ -24,7 +24,8 @@ Starting with **Telegram Bot API 10.1**, Telegram introduced **Rich Messages** (
 - Messages up to **32,768 characters** (no more 4,096-character limit!).
 - **Native interactive tables** with borders and striping.
 - **Native LaTeX math rendering** (both inline and display equations).
-- **Expandable spoiler/details blocks** for reasoning models (`DeepSeek-R1`, `OpenAI o1/o3`).
+- **Expandable spoiler/details blocks** for reasoning models (`DeepSeek-R1`, `OpenAI o1/o3`, `Qwen`, `Gemini`).
+- **Native lists and advanced typography** (`<ul>`, `<ol>`, `<u>`, `<mark>`).
 
 However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown and LaTeX. `tg-rich-converter` bridges this gap seamlessly in **a single function call**.
 
@@ -32,12 +33,14 @@ However, LLMs (OpenAI, Anthropic, DeepSeek, Ollama) still output plain Markdown 
 
 ## Features
 
-- 📊 **Native Tables:** Converts standard Markdown pipe tables (`| col | col |`) into `<table bordered striped>` with column alignment (`left`, `center`, `right`).
-- 🧮 **LaTeX Math:** Converts `$$...$$` into `<tg-math-block>` and `$x$` into `<tg-math>`. Even works **inside table cells**!
-- 🧠 **AI Thinking Blocks:** Converts `<think>...</think>` tags from reasoning models into expandable native `<details><summary>Размышления</summary>...</details>` blocks.
+- 📊 **Robust Native Tables:** Converts standard Markdown pipe tables into `<table bordered striped>` with column alignment (`left`, `center`, `right`). Safely handles formulas with pipes (`$|\psi\rangle$`, `$|x| \ge 0$`) and escaped pipes (`\|`) inside table cells without breaking columns.
+- 🧮 **LaTeX Math:** Converts `$$...$$` into `<tg-math-block>` and `$x$` into `<tg-math>`.
+- 🧠 **Customizable AI Thinking Blocks:** Converts `<think>...</think>` tags from reasoning models into expandable `<details><summary>Размышления</summary>...</details>` blocks with configurable summary titles.
+- 🛡️ **HTML-Safe:** Automatically escapes raw `<`, `>`, and `&` in regular text (e.g. mathematical conditions like `x < 5` and `y > 10`), completely preventing Telegram API `400 Bad Request: can't parse entities` errors.
+- 📋 **Native Lists:** Converts unordered (`- `, `* `, `+ `) and ordered (`1. `) lists into native `<ul>` and `<ol>` tags, avoiding conflicts between asterisk bullet markers and italics.
+- 🎨 **Rich Typography:** Supports bold (`**`), italic (`*` / `_`), strikethrough (`~~`), underline (`++text++`), highlight (`==text==`), and spoilers (`||spoiler||`) with snake_case protection.
 - 💻 **Syntax-Highlighted Code:** Converts ` ```python ` into `<pre><code class="language-python">` preserving quotes and copy-paste buttons.
-- 💬 **Quotes & Spoilers:** Native blockquotes and spoilers (`||spoiler||`) with snake_case protection.
-- ⚡ **Zero Dependencies:** Pure standard Python (`re`, `html`). Extremely fast (~0.001s per message).
+- ⚡ **Thread-Safe & Zero Dependencies:** Pure standard Python (`re`, `html`). Fully reentrant and async-safe for high-concurrency bot environments.
 
 ---
 
@@ -57,20 +60,26 @@ from tg_rich_converter import to_rich
 llm_output = """
 # Quantum Computing Report
 
-| Algorithm | Database | Complexity | Speedup |
-|:----------|:--------:|:----------:|--------:|
-| Linear Search | $N$ items | $O(N)$ | $1\\times$ |
-| Grover Search | $N$ items | $O(\\sqrt{N})$ | Quadratic |
+| Algorithm | State | Complexity | Option |
+|:----------|:-----:|:----------:|-------:|
+| Linear Search | $N$ items | $O(N)$ | Mode A \\| B |
+| State Vector  | $|\\psi\\rangle$ | $O(1)$ | Basic |
 
 ### Key Formula
 $$|\\psi\\rangle = \\alpha |0\\rangle + \\beta |1\\rangle$$
+
+Stability requires delta < 0.05 and alpha > 0.
 
 <think>
 Evaluating time complexity and qubit entanglement...
 </think>
 """
 
+# Default thinking summary is "Размышления"
 rich_html = to_rich(llm_output)
+
+# Or specify a custom summary:
+rich_html_en = to_rich(llm_output, thinking_summary="Reasoning Process")
 ```
 
 ---
@@ -107,7 +116,7 @@ bot.send_rich_message(
 )
 ```
 
-### 3. Direct HTTP (requests / httpx)
+### 3. Direct HTTP (requests / httpx / urllib)
 
 ```python
 import requests

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tg-rich-converter"
-version = "0.1.1"
+dynamic = ["version"]
 description = "Convert LLM Markdown, LaTeX formulas and tables to native Telegram Rich HTML (Bot API 10.1+)"
 readme = "README.md"
 authors = [
@@ -25,6 +25,9 @@ dependencies = []
 Homepage = "https://github.com/kobaltgit/tg-rich-converter"
 Repository = "https://github.com/kobaltgit/tg-rich-converter"
 Issues = "https://github.com/kobaltgit/tg-rich-converter/issues"
+
+[tool.hatch.version]
+path = "tg_rich_converter/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["tg_rich_converter"]
