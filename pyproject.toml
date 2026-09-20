@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tg-rich-converter"
-version = "0.1.0"
+version = "0.1.1"
 description = "Convert LLM Markdown, LaTeX formulas and tables to native Telegram Rich HTML (Bot API 10.1+)"
 readme = "README.md"
 authors = [
