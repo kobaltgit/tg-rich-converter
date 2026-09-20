@@ -5,7 +5,7 @@
 
 # <img src="https://raw.githubusercontent.com/kobaltgit/tg-rich-converter/main/assets/icon.svg" alt="tg-rich-converter icon" width="20%" /> 
 
-tg-rich-converter
+# tg-rich-converter
 
 
 [![PyPI version](https://img.shields.io/pypi/v/tg-rich-converter.svg)](https://pypi.org/project/tg-rich-converter/)
