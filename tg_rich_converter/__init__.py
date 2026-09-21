@@ -1,4 +1,4 @@
-__version__ = "0.5.0"
+__version__ = "0.5.1"
 
 from .cli import main as cli_main
 from .converter import TelegramRichConverter, markdown_to_rich, to_rich
