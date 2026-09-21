@@ -321,6 +321,9 @@ pytest
 ```
 
 ### 2. Live Telegram Streaming Demo
+
+> 🎬 **Demo:** [The Secret to Perfect Telegram Bot Streaming](https://www.youtube.com/watch?v=bINwbCmhl1g)
+
 Test real-time LLM token-by-token streaming with rate-limiting throttle (0.7s) directly in your Telegram chat:
 ```bash
 # Direct CLI arguments
